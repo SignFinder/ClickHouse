@@ -180,6 +180,7 @@ def kafka_setup_teardown():
         time.sleep(0.5)
     yield  # run test
 
+
 def get_kafka_producer(port, serializer, retries):
     errors = []
     for _ in range(retries):
@@ -202,12 +203,12 @@ def producer_serializer(x):
 
 
 def kafka_create_topic(
-        admin_client,
-        topic_name,
-        num_partitions=1,
-        replication_factor=1,
-        max_retries=50,
-        config=None,
+    admin_client,
+    topic_name,
+    num_partitions=1,
+    replication_factor=1,
+    max_retries=50,
+    config=None,
 ):
     logging.debug(
         f"Kafka create topic={topic_name}, num_partitions={num_partitions}, replication_factor={replication_factor}"
@@ -258,12 +259,12 @@ def kafka_delete_topic(admin_client, topic, max_retries=50):
 
 @contextmanager
 def kafka_topic(
-        admin_client,
-        topic_name,
-        num_partitions=1,
-        replication_factor=1,
-        max_retries=50,
-        config=None,
+    admin_client,
+    topic_name,
+    num_partitions=1,
+    replication_factor=1,
+    max_retries=50,
+    config=None,
 ):
     kafka_create_topic(
         admin_client,
@@ -349,13 +350,13 @@ def kafka_produce_protobuf_messages(kafka_cluster, topic, start_index, num_messa
 
 
 def kafka_consume_with_retry(
-        kafka_cluster,
-        topic,
-        expected_messages,
-        need_decode=True,
-        timestamp=0,
-        retry_count=20,
-        sleep_time=0.1,
+    kafka_cluster,
+    topic,
+    expected_messages,
+    need_decode=True,
+    timestamp=0,
+    retry_count=20,
+    sleep_time=0.1,
 ):
     messages = []
     try_count = 0
@@ -375,7 +376,7 @@ def kafka_consume_with_retry(
 
 
 def kafka_produce_protobuf_messages_no_delimiters(
-        kafka_cluster, topic, start_index, num_messages
+    kafka_cluster, topic, start_index, num_messages
 ):
     data = ""
     producer = KafkaProducer(
@@ -485,17 +486,17 @@ def create_settings_string(settings):
 
 
 def generate_old_create_table_query(
-        table_name,
-        columns_def,
-        database="test",
-        brokers="{kafka_broker}:19092",
-        topic_list="{kafka_topic_new}",
-        consumer_group="{kafka_group_name_new}",
-        format="{kafka_format_json_each_row}",
-        row_delimiter="\\n",
-        keeper_path=None,  # it is not used, but it is easier to handle keeper_path and replica_name like this
-        replica_name=None,
-        settings=None,
+    table_name,
+    columns_def,
+    database="test",
+    brokers="{kafka_broker}:19092",
+    topic_list="{kafka_topic_new}",
+    consumer_group="{kafka_group_name_new}",
+    format="{kafka_format_json_each_row}",
+    row_delimiter="\\n",
+    keeper_path=None,  # it is not used, but it is easier to handle keeper_path and replica_name like this
+    replica_name=None,
+    settings=None,
 ):
     settings_string = create_settings_string(settings)
     query = f"""CREATE TABLE {database}.{table_name} ({columns_def}) ENGINE = Kafka('{brokers}', '{topic_list}', '{consumer_group}', '{format}', '{row_delimiter}')
@@ -505,17 +506,17 @@ def generate_old_create_table_query(
 
 
 def generate_new_create_table_query(
-        table_name,
-        columns_def,
-        database="test",
-        brokers="{kafka_broker}:19092",
-        topic_list="{kafka_topic_new}",
-        consumer_group="{kafka_group_name_new}",
-        format="{kafka_format_json_each_row}",
-        row_delimiter="\\n",
-        keeper_path=None,
-        replica_name=None,
-        settings=None,
+    table_name,
+    columns_def,
+    database="test",
+    brokers="{kafka_broker}:19092",
+    topic_list="{kafka_topic_new}",
+    consumer_group="{kafka_group_name_new}",
+    format="{kafka_format_json_each_row}",
+    row_delimiter="\\n",
+    keeper_path=None,
+    replica_name=None,
+    settings=None,
 ):
     if settings is None:
         settings = {}
